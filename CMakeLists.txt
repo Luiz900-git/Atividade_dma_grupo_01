@@ -10,18 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # (note this can come from environment, CMake cache etc)
 
 # == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
-if(WIN32)
-    set(USERHOME $ENV{USERPROFILE})
-else()
-    set(USERHOME $ENV{HOME})
-endif()
-set(sdkVersion 2.2.0)
-set(toolchainVersion 14_2_Rel1)
-set(picotoolVersion 2.2.0-a4)
-set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
-if (EXISTS ${picoVscode})
-    include(${picoVscode})
-endif()
+
 # ====================================================================================
 set(PICO_BOARD pico_w CACHE STRING "Board type")
 
@@ -37,15 +26,15 @@ pico_sdk_init()
 
 add_executable(teste_dma teste_dma.c )
 
-pico_set_program_name(teste_dma "teste_dma")
-pico_set_program_version(teste_dma "0.1")
+pico_set_program_name(${PROJECT_NAME} "teste_dma")
+pico_set_program_version(${PROJECT_NAME} "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(teste_dma 0)
-pico_enable_stdio_usb(teste_dma 1)
+pico_enable_stdio_uart(${PROJECT_NAME} 0)
+pico_enable_stdio_usb(${PROJECT_NAME} 1)
 
 # Add the standard library to the build
-target_link_libraries(teste_dma
+target_link_libraries(${PROJECT_NAME}
         pico_stdlib
         hardware_dma 
         hardware_pwm
@@ -56,12 +45,12 @@ target_link_libraries(teste_dma
         )
 
 # Add the standard include files to the build
-target_include_directories(teste_dma PRIVATE
+target_include_directories(${PROJECT_NAME} PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
 )
 
 # Add any user requested libraries
-target_link_libraries(teste_dma 
+target_link_libraries(${PROJECT_NAME} 
     pico_stdlib 
     hardware_dma 
     hardware_pwm
@@ -70,5 +59,5 @@ target_link_libraries(teste_dma
         
         )
 
-pico_add_extra_outputs(teste_dma)
+pico_add_extra_outputs(${PROJECT_NAME})
 
